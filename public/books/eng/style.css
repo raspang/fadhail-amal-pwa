@@ -1,0 +1,296 @@
+/* =========================================================
+   Fadhail-e-Amal (English) — e-book reader stylesheet
+   Mobile-first, designed for an Android WebView.
+   Works on the existing converted markup (no HTML changes needed).
+   ========================================================= */
+
+/* ---------- Theme tokens ---------- */
+:root {
+  --bg: #fdfbf6;
+  --text: #2b2b2b;
+  --muted: #6b6b6b;
+  --heading: #1f3d2b;
+  --accent: #2e6b4a; /* green accent for headings, links, borders */
+  --quote-bg: #f2f6f1;
+  --quote-border: #2e6b4a;
+  --ayah-bg: #ffffff;
+  --rule: #e3dfd3;
+
+  --font-body: Georgia, 'Noto Serif', 'Times New Roman', serif;
+  --font-heading: Georgia, 'Noto Serif', serif;
+
+  --base-size: 1.0625rem; /* ~17px; the app can override this for a font-size slider */
+  --line: 1.7;
+  --gutter: 1.1rem; /* side padding on phones */
+}
+
+/* Sepia — set <body data-theme="sepia"> (or on <html>) from the app */
+[data-theme='sepia'] {
+  --bg: #f4ecd8;
+  --text: #3b2f20;
+  --muted: #7a6a52;
+  --heading: #4a3410;
+  --accent: #8a5a1c;
+  --quote-bg: #ebe0c4;
+  --quote-border: #8a5a1c;
+  --ayah-bg: #fbf6ea;
+  --rule: #d9cba6;
+}
+
+/* Night */
+[data-theme='dark'] {
+  --bg: #15181a;
+  --text: #d9d6cf;
+  --muted: #9a968d;
+  --heading: #cfe3d4;
+  --accent: #7fbf98;
+  --quote-bg: #1e2622;
+  --quote-border: #5fa37c;
+  --ayah-bg: #f3f0e8; /* keep Arabic images on a light card so the black script stays legible */
+  --rule: #2c3330;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #15181a;
+    --text: #d9d6cf;
+    --muted: #9a968d;
+    --heading: #cfe3d4;
+    --accent: #7fbf98;
+    --quote-bg: #1e2622;
+    --quote-border: #5fa37c;
+    --ayah-bg: #f3f0e8;
+    --rule: #2c3330;
+  }
+}
+
+/* ---------- Page ---------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 40rem; /* comfortable line length on tablets */
+  padding: 1.25rem var(--gutter) 3rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--base-size);
+  line-height: var(--line);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ---------- Paragraphs ---------- */
+p {
+  margin: 0 0 0.9em;
+  text-align: start; /* justified text leaves big gaps on narrow phones */
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/* ---------- Headings ---------- */
+h2,
+h3,
+h4,
+h5 {
+  font-size: 1em; /* size comes from the .fontN span inside */
+  font-family: var(--font-heading);
+  color: var(--heading);
+  line-height: 1.3;
+  text-align: center;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+/* Book title */
+h3 {
+  margin: 1.5em 0 1em;
+}
+
+/* "Contents" and "Part One", "Part Two"… (some books use <h2>) */
+h2,
+h4 {
+  margin: 2.5em 0 1em;
+  padding-bottom: 0.5em;
+  border-bottom: 2px solid var(--accent);
+}
+
+/* Story / chapter titles */
+h5 {
+  margin: 2.2em 0 0.9em;
+  padding: 0 0.5em;
+}
+h5::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin: 0.6em auto 0;
+  background: var(--accent);
+  opacity: 0.6;
+}
+
+/* Some story titles were converted as <h3> — style them like h5 */
+h3:has(> .font12) {
+  margin: 2.2em 0 0.9em;
+}
+
+/* ---------- Size classes from the PDF converter ----------
+   Original values were fixed pt sizes (10pt Arial etc.).
+   Mapped to relative sizes so the reader can scale text. */
+.font0 {
+  font-size: 0.8em;
+}
+.font1 {
+  font-size: 1em;
+} /* body text */
+.font2 {
+  font-size: 1em;
+} /* translations / quotations */
+.font3 {
+  font-size: 1em;
+}
+.font4 {
+  font-size: 1em;
+}
+.font5 {
+  font-size: 1.05em;
+}
+.font7 {
+  font-size: 1em;
+}
+.font8 {
+  font-size: 1em;
+}
+.font9 {
+  font-size: 1.05em;
+}
+.font10 {
+  font-size: 1.1em;
+} /* "Part One" in contents */
+.font11 {
+  font-size: 1.15em;
+}
+.font12 {
+  font-size: 1.25em;
+} /* story headings */
+.font13 {
+  font-size: 1.5em;
+} /* part headings */
+.font14 {
+  font-size: 2em;
+} /* book title */
+.font6 {
+  /* "Contents" (was 22pt Courier) */
+  font-size: 1.5em;
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Images (Arabic ayahs / du'aas) ---------- */
+img {
+  display: block;
+  max-width: 100% !important; /* inline pt widths overflow phone screens */
+  height: auto !important;
+  margin: 0 auto;
+}
+
+/* Small symbols inside running text (e.g. ﷺ after "Rasulullah") */
+img.inline-img {
+  display: inline;
+  margin: 0 0.1em;
+  vertical-align: middle;
+  height: 1.2em !important; /* roughly the same height as the text */
+  width: auto !important;
+}
+
+/* Paragraph that holds an Arabic ayah image → centred card */
+p:has(img:not(.inline-img)) {
+  text-align: center;
+  margin: 1.4em 0 0.6em;
+  padding: 0.75em 0.5em;
+  background: var(--ayah-bg);
+  border-radius: 8px;
+}
+
+/* Cover images at the very top of each book */
+body > img {
+  margin: 0.5em auto;
+}
+
+/* ---------- Translations / quotations ----------
+   Paragraphs whose text is entirely italic (the translation that
+   follows each ayah, or a quoted saying) become an indented quote. */
+p:has(> span[style*='italic']):not(:has(> span:not([style*='italic']))) {
+  margin: 0.4em 0 1.4em;
+  padding: 0.75em 1em;
+  background: var(--quote-bg);
+  border-left: 4px solid var(--quote-border);
+  border-radius: 0 6px 6px 0;
+  text-align: left;
+}
+p:has(> span[style*='italic']):not(:has(> span:not([style*='italic']))) span {
+  font-weight: normal !important; /* bold + italic is heavy on small screens */
+}
+
+/* Consecutive quote paragraphs read as one block */
+p:has(> span[style*='italic']):not(:has(> span:not([style*='italic'])))
+  + p:has(> span[style*='italic']):not(:has(> span:not([style*='italic']))) {
+  margin-top: -1.4em;
+  border-radius: 0 0 6px 0;
+  padding-top: 0;
+}
+
+/* ---------- Table of contents ---------- */
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+p:has(> a[href^='#']) {
+  margin: 0;
+  padding: 0.55em 0;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  line-height: 1.4;
+}
+p:has(> a[href^='#']) a {
+  display: block; /* whole row is a tap target */
+}
+/* "Part One" rows inside the contents */
+p:has(> a[href^='#'] > .font10) {
+  margin-top: 1.2em;
+  border-bottom: none;
+  font-weight: bold;
+}
+
+/* Jump targets: keep headings clear of the top edge when tapped */
+a[name],
+[id] {
+  scroll-margin-top: 1rem;
+}
+
+/* ---------- Lists ---------- */
+ul {
+  margin: 0 0 1em;
+  padding-left: 0.5em;
+}
+li p {
+  padding-left: 1.6em;
+  text-indent: -1.6em; /* hanging indent for "1.  ..." */
+  text-align: left;
+}
+
+/* ---------- Larger screens ---------- */
+@media (min-width: 600px) {
+  :root {
+    --base-size: 1.125rem;
+    --gutter: 2rem;
+  }
+  p {
+    text-align: justify;
+  }
+}

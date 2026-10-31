@@ -1,0 +1,333 @@
+/* =========================================
+   CSS Variables for Light & Dark Theming
+   ========================================= */
+:root {
+  --bg-color: #fcfbf9;
+  --text-color: #2c2c2c;
+  --heading-color: #1a3b26;
+  --accent-color: #8b0000;
+  --verse-bg: #f4f1ea;
+  --border-color: #e0dcd5;
+  --font-main: Georgia, "Times New Roman", Times, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #121826;
+    --text-color: #e2e8f0;
+    --heading-color: #ffb300;
+    --accent-color: #ffca28;
+    --verse-bg: #1a233a;
+    --border-color: #2d3c5e;
+  }
+}
+
+/* =========================================
+   Base & Typography (Mobile First)
+   ========================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.8;
+  padding: 1rem;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* =========================================
+   Layout & Containers
+   ========================================= */
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+header,
+main,
+footer {
+  margin-bottom: 2rem;
+}
+
+/* =========================================
+   Headings
+   ========================================= */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-main);
+  color: var(--heading-color);
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  text-align: center;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+h2 {
+  font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+  margin-top: 2rem;
+  border-left: 4px solid var(--accent-color);
+  padding-left: 0.75rem;
+}
+
+h3 {
+  font-size: clamp(1.1rem, 4vw, 1.3rem);
+  color: var(--accent-color);
+  margin-top: 1.5rem;
+}
+
+/* =========================================
+   Content Elements
+   ========================================= */
+/* No auto-hyphenation: the pages are tagged lang="en", so the browser would
+   split Meranaw words using English rules */
+p {
+  margin-bottom: 1.2rem;
+  text-align: justify;
+  hyphens: manual;
+}
+
+/* Honorifics (e.g., Sallallaho ‘Alaihi Wasallam) */
+.honorific {
+  font-size: 0.9em;
+  color: var(--accent-color);
+  font-style: italic;
+}
+
+/* Quranic Verses / Translations */
+.verse,
+blockquote {
+  background-color: var(--verse-bg);
+  border-left: 4px solid var(--heading-color);
+  padding: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  border-radius: 0 8px 8px 0;
+}
+
+.verse cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: bold;
+  color: var(--heading-color);
+}
+
+/* Hadith Blocks */
+.hadith-block {
+  background: var(--verse-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+ul {
+  list-style-type: none;
+}
+.italic {
+  font-style: italic;
+}
+
+/* Numbered and bulleted lists, so the points are easy to count and memorize */
+ol,
+ul.points {
+  padding-left: 1.6rem;
+  margin-bottom: 1.2rem;
+}
+
+ul.points {
+  list-style-type: disc;
+}
+
+ol li,
+ul.points li {
+  margin-bottom: 0.6rem;
+  padding-left: 0.2rem;
+}
+
+li > ol,
+li > ul.points {
+  margin-top: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+li p {
+  margin-bottom: 0.4rem;
+}
+
+/* Small explanation under a point (former footnotes) */
+.note {
+  font-size: 0.9em;
+  border-left: 3px solid var(--border-color);
+  padding-left: 0.75rem;
+  margin: 0.4rem 0 0.6rem;
+}
+
+/* Short summary box at the top of a long page */
+.summary {
+  background: var(--verse-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem 1rem 0.2rem;
+  margin-bottom: 1.5rem;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: bold;
+  color: var(--heading-color);
+}
+
+.arabic-img {
+  margin: 1rem auto 0.5rem;
+}
+
+/* Packing checklist */
+ul.checklist {
+  margin-bottom: 1.5rem;
+}
+
+ul.checklist li {
+  margin-bottom: 0.5rem;
+}
+
+ul.checklist label {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+}
+
+ul.checklist input {
+  margin-top: 0.45em;
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+
+/* Generated Font Classes */
+.font0,
+.font1,
+.font2,
+.font3,
+.font4,
+.font5,
+.font6,
+.font7,
+.font8,
+.font9,
+.font10,
+.font11,
+.font12,
+.font13,
+.font14 {
+  font-family: var(--font-main);
+  font-size: 1.15rem;
+}
+
+.font15 {
+  font-family: var(--font-main);
+  font-size: clamp(1.3rem, 5vw, 1.8rem);
+}
+
+.font16 {
+  font-family: var(--font-main);
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  border-radius: 6px;
+}
+
+img.inline-img {
+  display: inline;
+  margin: 0;
+  vertical-align: middle;
+  max-width: 100%;
+  height: 1.2em;
+  width: auto;
+}
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+@media screen and (max-width: 480px) {
+  body {
+    padding: 12px;
+  }
+  p {
+    text-align: justify;
+  }
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 18px;
+  }
+  body {
+    padding: 2rem;
+  }
+  .container {
+    max-width: 750px;
+  }
+}
+
+/* Centered lines (Bismillah, cover, author signature) */
+.center {
+  text-align: center;
+}
+
+.signature {
+  text-align: right;
+  font-style: italic;
+  font-size: 0.9em;
+  margin-top: 1.5rem;
+}
+
+/* "Pinto I" label above a chapter title */
+.chapter-label {
+  display: block;
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  color: var(--accent-color);
+}
