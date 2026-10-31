@@ -69,3 +69,13 @@ If you add or rename pages in `SahabaContent.java`, regenerate the table of cont
 ```bash
 python3 scripts/convert-content.py ../totolankomgasahaba/app/src/main/java/com/nzpenterprises/totolankomgasahaba/sahaba/SahabaContent.java public/data/content.json
 ```
+
+## License
+
+Open source under the [Apache License 2.0](LICENSE). Copyright 2026 Mohammad Rasol Z. Pangcoga (iNZPdev).
+
+You may use, change and republish this app, **as long as you credit the original project**:
+keep the [NOTICE](NOTICE) file, show the credit to the original project where users can see it
+(for example on an About screen), and mark the files you changed.
+
+The book texts belong to their authors, translators and publishers and are not covered by this license.

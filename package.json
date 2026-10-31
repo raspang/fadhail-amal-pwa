@@ -31,5 +31,7 @@
     "@angular/compiler-cli": "^22.2.0",
     "prettier": "^3.8.1",
     "typescript": "~6.0.2"
-  }
+  },
+  "license": "Apache-2.0",
+  "author": "Mohammad Rasol Z. Pangcoga (iNZPdev) <raspangv1@gmail.com>"
 }

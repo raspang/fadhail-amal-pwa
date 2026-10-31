@@ -54,7 +54,11 @@ import { openEmail } from '../services/mailer';
           <div class="email">{{ email }}</div>
         </div>
 
-        <p class="footer">Made for the Muslim Ummah's benefit</p>
+        <p class="footer">
+          Made for the Muslim Ummah's benefit<br />
+          © {{ year }} Mohammad Rasol Z. Pangcoga (iNZPdev)<br />
+          Open source under the Apache License 2.0. You may reuse it if you credit this original project.
+        </p>
       </div>
     </ion-content>
   `,
@@ -72,12 +76,13 @@ import { openEmail } from '../services/mailer';
     .grow { flex: 1; }
     .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
     .email { margin-top: 8px; color: var(--fa-muted); font-size: 12px; text-align: center; user-select: text; }
-    .footer { margin: 24px 0 12px; color: var(--fa-muted); font-size: 12px; text-align: center; }
+    .footer { margin: 24px 0 12px; color: var(--fa-muted); font-size: 12px; line-height: 1.7; text-align: center; }
   `,
 })
 export class AboutPage {
   protected version = APP_VERSION;
   protected email = DEVELOPER_EMAIL;
+  protected year = Math.max(2026, new Date().getFullYear());
 
   protected feedback() {
     openEmail('[Fadhail Amal] Feedback', '');

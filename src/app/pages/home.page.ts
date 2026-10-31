@@ -75,7 +75,7 @@ import { BookIconPipe } from '../shared';
           <ion-icon name="chevron-forward" color="medium" />
         </a>
 
-        <p class="footer">Fadhail Amal · v{{ version }}</p>
+        <p class="footer">Fadhail Amal · v{{ version }} · © iNZPdev</p>
       </div>
     </ion-content>
   `,
