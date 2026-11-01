@@ -5,7 +5,7 @@ import {
   IonIcon, IonModal, IonRadio, IonRadioGroup, IonTitle, IonToolbar, ToastController,
 } from '@ionic/angular';
 import { ContentService, Item, fromSlug, toSlug } from '../services/content.service';
-import { READER_FONTS, StoreService, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from '../services/store.service';
+import { READER_FONTS, StoreService, Theme, ZOOM_MAX, ZOOM_MIN, ZOOM_STEP } from '../services/store.service';
 
 /** The longest selection that can be reported, so a report points at one spot. */
 const MAX_WORDS = 15;
@@ -14,6 +14,34 @@ const MAX_CHARS = 120;
 interface Selected {
   text: string;
   context: string;
+}
+
+/**
+ * The book pages' colours, set to match the app's Day and Night themes.
+ * The Meranaw books use --bg-color/--heading-color/...; the English books use --bg/--heading/...
+ * Set with !important on :root so they win over each book's own light/dark rules.
+ */
+const BOOK_COLORS: Record<Theme, Record<string, string>> = {
+  light: {
+    '--bg-color': '#fffdf7', '--text-color': '#1b1f1c', '--heading-color': '#0b5d3b',
+    '--accent-color': '#8a6a12', '--verse-bg': '#f6f0e0', '--border-color': '#e3d9c2',
+    '--bg': '#fffdf7', '--text': '#1b1f1c', '--muted': '#5f6b64', '--heading': '#0b5d3b',
+    '--accent': '#0b6b44', '--quote-bg': '#f1f6ef', '--quote-border': '#c9a646', '--ayah-bg': '#ffffff',
+    '--rule': '#e3d9c2', '--card': '#ffffff', '--note-bg': '#f1f6ef', '--img-filter': 'none',
+  },
+  dark: {
+    '--bg-color': '#121826', '--text-color': '#e2e8f0', '--heading-color': '#ffb300',
+    '--accent-color': '#ffca28', '--verse-bg': '#1a233a', '--border-color': '#2d3c5e',
+    '--bg': '#121826', '--text': '#e2e8f0', '--muted': '#94a3b8', '--heading': '#ffb300',
+    // Arabic script images stay on a light card so the black text is readable
+    '--accent': '#ffca28', '--quote-bg': '#1a233a', '--quote-border': '#ffb300', '--ayah-bg': '#f3f0e8',
+    '--rule': '#2d3c5e', '--card': '#1e2942', '--note-bg': '#1a233a', '--img-filter': 'invert(0.88)',
+  },
+};
+
+function bookColors(theme: Theme): string {
+  const vars = Object.entries(BOOK_COLORS[theme]).map(([k, v]) => `${k}:${v} !important`).join(';');
+  return `:root{${vars}}`;
 }
 
 /**
@@ -212,8 +240,7 @@ export class ReaderPage implements OnDestroy {
     const doc = this.frame()?.nativeElement.contentDocument;
     if (!doc?.head) return;
     const { zoom, font } = this.store.reader();
-    // Book pages switch to dark with prefers-color-scheme, which in a frame follows its color-scheme;
-    // the English stylesheet also reads data-theme
+    // Colours come from BOOK_COLORS (top of file); this also sets scrollbars and form controls to match
     const theme = this.store.theme();
     this.frame().nativeElement.style.colorScheme = theme;
     doc.documentElement.setAttribute('data-theme', theme);
@@ -236,7 +263,8 @@ export class ReaderPage implements OnDestroy {
       // The book stylesheets turn off selection; allow it so readers can report mistakes
       `body,body *{-webkit-user-select:text !important;user-select:text !important}` +
       // Room at the bottom so the last line is not under the bookmark button
-      `body{padding-bottom:96px !important}`;
+      `body{padding-bottom:96px !important}` +
+      bookColors(theme);
     this.fitHeight();
   }
 
