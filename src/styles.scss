@@ -7,21 +7,78 @@
 @import '@ionic/angular/css/flex-utils.css';
 @import '@ionic/angular/css/display.css';
 
-/* Same dark navy + gold palette as the Android app (res/values/colors.xml) */
+/*
+ * Light (default): warm paper background, deep green and gold, dark text with strong contrast,
+ * so it is easy on older eyes in daylight. Night mode keeps the Android app's navy + gold.
+ * The theme is chosen in the app and set as <html data-theme="..."> (see index.html).
+ */
 :root {
-  --fa-primary: #0f1a36;
-  --fa-primary-dark: #091024;
+  --fa-bar: #0b5d3b;
+  --fa-bar-text: #ffffff;
+  --fa-bar-accent: #ffd666;
+  --fa-bg: #f6f2e8;
+  --fa-hero: #fffaf0;
+  --fa-hero-light: #f1e7cf;
+  --fa-hero-border: #c9a646;
+  --fa-card: #ffffff;
+  --fa-stroke: #d9cfb8;
+  --fa-icon-bg: #e2f0e7;
+  --fa-accent: #0b6b44;
+  --fa-on-accent: #ffffff;
+  --fa-ornament: #8a6a12;
+  --fa-text: #1b1f1c;
+  --fa-text-2: #3f4a44;
+  --fa-muted: #5f6b64;
+  --fa-danger: #b42318;
+  --fa-reading-bg: #fcfbf9;
+  color-scheme: light;
+
+  --ion-color-primary: #0b6b44;
+  --ion-color-primary-rgb: 11, 107, 68;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #095e3c;
+  --ion-color-primary-tint: #237a57;
+
+  --ion-background-color: var(--fa-bg);
+  --ion-background-color-rgb: 246, 242, 232;
+  --ion-text-color: var(--fa-text);
+  --ion-text-color-rgb: 27, 31, 28;
+  --ion-toolbar-background: var(--fa-bar);
+  --ion-toolbar-color: var(--fa-bar-text);
+  --ion-item-background: var(--fa-card);
+  --ion-border-color: var(--fa-stroke);
+  --ion-card-background: var(--fa-card);
+  --ion-overlay-background-color: var(--fa-card);
+  --ion-color-step-50: #f2efe6;
+  --ion-color-step-100: #e7e2d6;
+  --ion-color-step-150: #dcd6c8;
+  --ion-color-step-200: #d0cab9;
+  --ion-color-step-600: #5f6b64;
+  --ion-color-step-850: #2a302c;
+  --ion-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --fa-bar: #091024;
+  --fa-bar-text: #ffffff;
+  --fa-bar-accent: #ffb300;
   --fa-bg: #121826;
   --fa-hero: #1a233a;
   --fa-hero-light: #26355a;
+  --fa-hero-border: rgba(255, 179, 0, 0.35);
   --fa-card: #1e2942;
   --fa-stroke: #2d3c5e;
   --fa-icon-bg: #2a3756;
-  --fa-gold: #ffb300;
+  --fa-accent: #ffb300;
+  --fa-on-accent: #091024;
+  --fa-ornament: #ffb300;
   --fa-text: #ffffff;
-  --fa-text-2: #94a3b8;
-  --fa-muted: #64748b;
+  --fa-text-2: #b4c0d0;
+  --fa-muted: #8a9ab0;
   --fa-danger: #e5484d;
+  --fa-reading-bg: #121826;
+  color-scheme: dark;
 
   --ion-color-primary: #ffb300;
   --ion-color-primary-rgb: 255, 179, 0;
@@ -30,15 +87,8 @@
   --ion-color-primary-shade: #e09e00;
   --ion-color-primary-tint: #ffbb1a;
 
-  --ion-background-color: var(--fa-bg);
   --ion-background-color-rgb: 18, 24, 38;
-  --ion-text-color: var(--fa-text);
   --ion-text-color-rgb: 255, 255, 255;
-  --ion-toolbar-background: var(--fa-primary-dark);
-  --ion-toolbar-color: var(--fa-text);
-  --ion-item-background: var(--fa-card);
-  --ion-border-color: var(--fa-stroke);
-  --ion-card-background: var(--fa-card);
   --ion-overlay-background-color: var(--fa-hero);
   --ion-color-step-50: #1a2234;
   --ion-color-step-100: #222b3f;
@@ -46,11 +96,22 @@
   --ion-color-step-200: #323c53;
   --ion-color-step-600: #94a3b8;
   --ion-color-step-850: #e2e8f0;
-  --ion-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Slightly larger text everywhere, for older readers */
+html {
+  font-size: 17px;
+}
+body {
+  font-size: 1rem;
 }
 
 ion-toolbar {
   --border-width: 0 !important;
+}
+ion-title {
+  font-size: 20px;
+  font-weight: 700;
 }
 
 /* Shared building blocks used by several pages */
@@ -70,8 +131,8 @@ button.fa-card {
 }
 .fa-section {
   margin: 24px 4px 10px;
-  color: var(--fa-gold);
-  font-size: 13px;
+  color: var(--fa-accent);
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -85,7 +146,7 @@ button.fa-card {
   height: 48px;
   border-radius: 50%;
   background: var(--fa-icon-bg);
-  color: var(--fa-gold);
+  color: var(--fa-accent);
 }
 .fa-icon-circle svg {
   width: 24px;
@@ -95,15 +156,17 @@ button.fa-card {
   display: flex;
   align-items: center;
   gap: 14px;
+  min-height: 72px;
   padding: 14px 16px;
 }
 .fa-row-title {
-  font-weight: 600;
+  font-size: 17px;
+  font-weight: 700;
 }
 .fa-row-sub {
   margin-top: 2px;
   color: var(--fa-text-2);
-  font-size: 13px;
+  font-size: 15px;
 }
 .fa-empty {
   padding: 48px 24px;
@@ -121,9 +184,14 @@ button.fa-card {
 
 /* Toasts and alerts in the app's colours */
 ion-toast {
-  --background: #26355a;
+  --background: #1b1f1c;
   --color: #ffffff;
-  --button-color: var(--fa-gold);
+  --button-color: #ffcf5a;
+  font-size: 16px;
+}
+:root[data-theme='dark'] ion-toast {
+  --background: #26355a;
+  --button-color: var(--fa-accent);
 }
 ion-alert .alert-sub-title {
   color: var(--fa-text-2) !important;
@@ -141,26 +209,26 @@ ion-alert .alert-message {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 46px;
+  min-height: 50px;
   padding: 0 16px;
   border: 1px solid var(--fa-stroke);
   border-radius: 12px;
   background: transparent;
   color: var(--fa-text);
-  font: 600 14px var(--ion-font-family);
+  font: 600 15px var(--ion-font-family);
   text-decoration: none;
   cursor: pointer;
 }
 .fa-btn.gold {
-  border-color: var(--fa-gold);
-  background: var(--fa-gold);
-  color: var(--fa-primary-dark);
-  font-size: 16px;
+  border-color: var(--fa-accent);
+  background: var(--fa-accent);
+  color: var(--fa-on-accent);
+  font-size: 17px;
   font-weight: 700;
 }
 .fa-btn.link {
   border: 0;
-  color: var(--fa-gold);
+  color: var(--fa-accent);
 }
 .fa-btn ion-icon {
   font-size: 18px;

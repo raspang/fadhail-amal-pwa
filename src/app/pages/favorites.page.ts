@@ -40,7 +40,7 @@ import { StoreService } from '../services/store.service';
   styles: `
     .row { display: flex; align-items: center; margin-bottom: 10px; padding: 6px 4px 6px 16px; }
     .text { flex: 1; min-width: 0; padding: 8px 0; color: inherit; text-decoration: none; line-height: 1.4; }
-    .book { display: block; color: var(--fa-text-2); font-size: 12px; }
+    .book { display: block; color: var(--fa-text-2); font-size: 14px; }
   `,
 })
 export class FavoritesPage {

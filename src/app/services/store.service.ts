@@ -27,6 +27,16 @@ export const ZOOM_MAX = 160;
 export const ZOOM_STEP = 10;
 const DEFAULT_SETTINGS: ReaderSettings = { zoom: 100, font: 0 };
 
+export type Theme = 'light' | 'dark';
+
+/** Same colours as --fa-bar in styles.scss, for the phone's status bar. */
+const BAR_COLORS: Record<Theme, string> = { light: '#0b5d3b', dark: '#091024' };
+
+function applyTheme(theme: Theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', BAR_COLORS[theme]);
+}
+
 function read<T>(key: string, fallback: T): T {
   try {
     const raw = localStorage.getItem(key);
@@ -52,6 +62,14 @@ export class StoreService {
   readonly favorites = signal<string[]>(read('fa.favorites', []));
   readonly reader = signal<ReaderSettings>({ ...DEFAULT_SETTINGS, ...read('fa.reader', {}) });
   readonly corrections = signal<Correction[]>(read('fa.corrections', []));
+  /** Light by default; index.html applies the saved choice before the app starts. */
+  readonly theme = signal<Theme>(read('fa.theme', 'light'));
+
+  setTheme(theme: Theme) {
+    this.theme.set(theme);
+    write('fa.theme', theme);
+    applyTheme(theme);
+  }
 
   setLanguage(lang: 'mrw' | 'eng') {
     this.language.set(lang);

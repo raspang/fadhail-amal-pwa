@@ -7,14 +7,20 @@ interface InstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+/** The original Android app. Android phones are sent here instead of installing the web app. */
+export const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.nzpenterprises.totolankomgasahaba';
+
 /**
- * Shows the "Install app" button. Browsers that support it get the real install prompt;
+ * Shows the "Install app" button. Android phones go to the Android app on Google Play.
+ * Other browsers that support it get the real install prompt;
  * the rest (iPhone/iPad, Firefox) get short instructions for adding it to the home screen.
  */
 @Injectable({ providedIn: 'root' })
 export class InstallService {
   private alerts = inject(AlertController);
   private deferred: InstallPromptEvent | null = null;
+
+  readonly android = /Android/i.test(navigator.userAgent);
 
   /** False once the app is running from its home screen icon, so the button hides. */
   readonly canInstall = signal(!isStandalone());
@@ -31,6 +37,10 @@ export class InstallService {
   }
 
   async install(): Promise<void> {
+    if (this.android) {
+      window.open(PLAY_STORE_URL, '_blank', 'noopener');
+      return;
+    }
     if (this.deferred) {
       const e = this.deferred;
       this.deferred = null; // the event can only be used once

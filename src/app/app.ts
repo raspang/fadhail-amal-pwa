@@ -5,6 +5,7 @@ import {
   arrowBack, arrowForward, bookmark, bookmarkOutline, chevronForward, createOutline,
   informationCircleOutline, logoFacebook, mailOutline, removeOutline, addOutline, text,
   trashOutline, closeOutline, shareOutline, addCircleOutline, downloadOutline,
+  logoGooglePlaystore, moon, sunny,
 } from 'ionicons/icons';
 import { InstallService } from './services/install.service';
 
@@ -22,6 +23,7 @@ export class App {
       arrowBack, arrowForward, bookmark, bookmarkOutline, chevronForward, createOutline,
       informationCircleOutline, logoFacebook, mailOutline, removeOutline, addOutline, text,
       trashOutline, closeOutline, shareOutline, addCircleOutline, downloadOutline,
+      logoGooglePlaystore, moon, sunny,
     });
   }
 }

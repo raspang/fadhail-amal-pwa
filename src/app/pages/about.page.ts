@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { IonBackButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular';
 import { APP_VERSION, DEVELOPER_EMAIL } from '../services/content.service';
+import { PLAY_STORE_URL } from '../services/install.service';
 import { openEmail } from '../services/mailer';
 
 @Component({
@@ -33,8 +34,13 @@ import { openEmail } from '../services/mailer';
         </div>
 
         <div class="fa-section">Install the app</div>
+        <a class="fa-card fa-row play" [href]="playStoreUrl" target="_blank" rel="noopener">
+          <span class="fa-icon-circle"><ion-icon name="logo-google-playstore" /></span>
+          <span class="grow"><div class="fa-row-title">Android phone?</div><div class="fa-row-sub">Get the Android app, free on Google Play</div></span>
+          <ion-icon name="chevron-forward" color="medium" />
+        </a>
         <div class="fa-card box">
-          <p>Tap the <b>Install</b> button <ion-icon name="download-outline" /> at the top of the home page. The app gets its own icon and works offline for pages you have opened.</p>
+          <p>On other phones and computers, tap the <b>Install</b> button <ion-icon name="download-outline" /> at the top of the home page. The app gets its own icon and works offline for pages you have opened.</p>
           <p>On iPhone, open this page in <b>Safari</b>, tap the <b>Share</b> button <ion-icon name="share-outline" />, then <b>Add to Home Screen</b> <ion-icon name="add-circle-outline" />.</p>
         </div>
 
@@ -72,17 +78,19 @@ import { openEmail } from '../services/mailer';
     .box { padding: 16px; line-height: 1.6; }
     .box p { margin: 0 0 10px; }
     .box p:last-child { margin: 0; }
-    .box ion-icon { vertical-align: -3px; color: var(--fa-gold); }
+    .box ion-icon { vertical-align: -3px; color: var(--fa-accent); }
     .fa-icon-circle ion-icon { font-size: 22px; }
     .grow { flex: 1; }
+    .play { margin-bottom: 10px; border: 2px solid var(--fa-accent); }
     .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
-    .email { margin-top: 8px; color: var(--fa-muted); font-size: 12px; text-align: center; user-select: text; }
-    .footer { margin: 24px 0 12px; color: var(--fa-muted); font-size: 12px; line-height: 1.7; text-align: center; }
+    .email { margin-top: 8px; color: var(--fa-muted); font-size: 13px; text-align: center; user-select: text; }
+    .footer { margin: 24px 0 12px; color: var(--fa-muted); font-size: 13px; line-height: 1.7; text-align: center; }
   `,
 })
 export class AboutPage {
   protected version = APP_VERSION;
   protected email = DEVELOPER_EMAIL;
+  protected playStoreUrl = PLAY_STORE_URL;
   protected year = Math.max(2026, new Date().getFullYear());
 
   protected feedback() {

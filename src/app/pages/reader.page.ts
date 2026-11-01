@@ -72,6 +72,10 @@ interface Selected {
             <span>{{ store.reader().zoom }}%</span>
             <ion-button fill="outline" (click)="zoom(1)" [disabled]="store.reader().zoom >= zoomMax" aria-label="Larger text"><ion-icon slot="icon-only" name="add-outline" /></ion-button>
           </div>
+          <div class="theme" role="group" aria-label="Screen">
+            <button [class.on]="store.theme() === 'light'" (click)="store.setTheme('light')"><ion-icon name="sunny" /> Day</button>
+            <button [class.on]="store.theme() === 'dark'" (click)="store.setTheme('dark')"><ion-icon name="moon" /> Night</button>
+          </div>
           <ion-radio-group [value]="store.reader().font" (ionChange)="setFont($event.detail.value)">
             @for (f of fonts; track f.name; let i = $index) {
               <ion-radio [value]="i" justify="space-between" [style.font-family]="f.stack">{{ f.name }}</ion-radio>
@@ -82,31 +86,37 @@ interface Selected {
     </ion-modal>
   `,
   styles: `
-    .reading { --background: #fcfbf9; }
-    @media (prefers-color-scheme: dark) { .reading { --background: #121826; } }
+    .reading { --background: var(--fa-reading-bg); }
     iframe { display: block; width: 100%; height: 100vh; border: 0; }
     ion-fab { margin-bottom: 8px; }
     .report {
       position: absolute; left: 50%; top: 12px; z-index: 20; white-space: nowrap; transform: translateX(-50%);
       display: flex; align-items: center; gap: 8px; padding: 12px 20px;
-      border: 0; border-radius: 24px; background: var(--fa-gold); color: var(--fa-primary-dark);
+      border: 0; border-radius: 24px; background: var(--fa-accent); color: var(--fa-on-accent);
       font: 600 15px var(--ion-font-family); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     }
-    .nav { --background: var(--fa-primary-dark); }
+    .nav { --background: var(--fa-bar); }
     .nav-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 6px 12px; }
     .nav-row button {
-      display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px;
-      border: 1px solid rgba(255, 179, 0, 0.55); border-radius: 12px; background: transparent;
-      color: var(--fa-gold); font: 700 15px var(--ion-font-family); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px;
+      border: 2px solid var(--fa-bar-accent); border-radius: 12px; background: transparent;
+      color: var(--fa-bar-accent); font: 700 17px var(--ion-font-family); cursor: pointer;
     }
     .nav-row button:disabled { opacity: 0.35; }
-    .nav-row .aa { border-color: var(--fa-stroke); background: var(--fa-hero); color: #fff; font: 17px Georgia, serif; }
+    .nav-row .aa { border-color: var(--fa-stroke); background: var(--fa-card); color: var(--fa-text); font: 19px Georgia, serif; }
     .settings { --height: auto; }
     .sheet { padding: 16px 20px 28px; }
     .sheet-head { display: flex; align-items: center; justify-content: space-between; }
     .sheet-head h2 { margin: 0; font-size: 18px; }
     .size { display: flex; align-items: center; justify-content: center; gap: 24px; margin: 16px 0; font-size: 18px; font-weight: 700; }
     ion-radio { display: block; padding: 12px 4px; font-size: 17px; }
+    .theme { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+    .theme button {
+      display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px;
+      border: 1px solid var(--fa-stroke); border-radius: 12px; background: transparent;
+      color: var(--fa-text); font: 700 16px var(--ion-font-family); cursor: pointer;
+    }
+    .theme button.on { border-color: var(--fa-accent); background: var(--fa-accent); color: var(--fa-on-accent); }
   `,
 })
 export class ReaderPage implements OnDestroy {
@@ -150,9 +160,10 @@ export class ReaderPage implements OnDestroy {
       const item = this.item();
       if (item) this.show(item);
     });
-    // Re-apply font and size when the settings change
+    // Re-apply font, size and Day/Night when the settings change
     effect(() => {
       this.store.reader();
+      this.store.theme();
       this.applySettings();
     });
   }
@@ -201,6 +212,11 @@ export class ReaderPage implements OnDestroy {
     const doc = this.frame()?.nativeElement.contentDocument;
     if (!doc?.head) return;
     const { zoom, font } = this.store.reader();
+    // Book pages switch to dark with prefers-color-scheme, which in a frame follows its color-scheme;
+    // the English stylesheet also reads data-theme
+    const theme = this.store.theme();
+    this.frame().nativeElement.style.colorScheme = theme;
+    doc.documentElement.setAttribute('data-theme', theme);
     const stack = (READER_FONTS[font] ?? READER_FONTS[0]).stack;
     let style = doc.getElementById('reader-settings');
     if (!style) {

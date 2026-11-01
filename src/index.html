@@ -6,8 +6,18 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Fadhail Amal in Meranaw and English" />
-    <meta name="theme-color" content="#091024" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0b5d3b" />
+    <meta name="color-scheme" content="light dark" />
+    <!-- Apply the saved theme (Light by default, or Night) before the page draws, so it never flashes -->
+    <script>
+      try {
+        var t = JSON.parse(localStorage.getItem('fa.theme')) === 'dark' ? 'dark' : 'light';
+      } catch (e) {
+        t = 'light';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', t === 'dark' ? '#091024' : '#0b5d3b');
+    </script>
     <!-- iPhone: lets "Add to Home Screen" open it full screen like an app -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes" />

@@ -58,9 +58,9 @@ import { Correction, StoreService } from '../services/store.service';
   styles: `
     .row { display: flex; align-items: center; margin-bottom: 10px; padding: 12px 4px 12px 16px; }
     .text { flex: 1; min-width: 0; }
-    .page { color: var(--fa-text-2); font-size: 12px; line-height: 1.4; }
+    .page { color: var(--fa-text-2); font-size: 14px; line-height: 1.4; }
     .wrong { margin-top: 6px; font-size: 16px; }
-    .suggestion { margin-top: 2px; color: var(--fa-gold); }
+    .suggestion { margin-top: 2px; color: var(--fa-accent); }
     .fa-icon-circle.big { width: 72px; height: 72px; margin: 0 auto; font-size: 30px; }
     .send { padding: 8px 12px; }
     .send button { width: 100%; }

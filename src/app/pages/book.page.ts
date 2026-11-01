@@ -39,14 +39,14 @@ import { StoreService } from '../services/store.service';
   styles: `
     .chapter { white-space: pre-line; line-height: 1.5; }
     .row { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; padding: 14px 16px; }
-    .row.last { border: 2px solid var(--fa-gold); background: var(--fa-hero); }
+    .row.last { border: 2px solid var(--fa-accent); background: var(--fa-hero); }
     .badge {
       display: flex; align-items: center; justify-content: center; flex: none;
       width: 40px; height: 40px; border-radius: 50%;
-      background: var(--fa-icon-bg); color: var(--fa-gold); font-weight: 700; font-size: 14px;
+      background: var(--fa-icon-bg); color: var(--fa-accent); font-weight: 700; font-size: 15px;
     }
     .text { flex: 1; min-width: 0; line-height: 1.4; }
-    .label { display: block; color: var(--fa-gold); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .label { display: block; color: var(--fa-accent); font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
     .bold { font-weight: 700; }
     .arrow { flex: none; color: var(--fa-muted); }
   `,

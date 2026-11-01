@@ -4,7 +4,7 @@ import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar,
 } from '@ionic/angular';
 import { APP_VERSION, ContentService, toSlug } from '../services/content.service';
-import { InstallService } from '../services/install.service';
+import { InstallService, PLAY_STORE_URL } from '../services/install.service';
 import { StoreService } from '../services/store.service';
 import { BookIconPipe } from '../shared';
 
@@ -17,7 +17,7 @@ import { BookIconPipe } from '../shared';
         <ion-title>Fadhail Amal</ion-title>
         <ion-buttons slot="end">
           @if (installer.canInstall()) {
-            <ion-button (click)="installer.install()" aria-label="Install app"><ion-icon slot="icon-only" name="download-outline" /></ion-button>
+            <ion-button (click)="installer.install()" [attr.aria-label]="installer.android ? 'Get the Android app' : 'Install app'"><ion-icon slot="icon-only" name="download-outline" /></ion-button>
           }
           <ion-button routerLink="/favorites" aria-label="Favorites"><ion-icon slot="icon-only" name="bookmark-outline" /></ion-button>
           <ion-button routerLink="/about" aria-label="About"><ion-icon slot="icon-only" name="information-circle-outline" /></ion-button>
@@ -38,6 +38,17 @@ import { BookIconPipe } from '../shared';
           <button [class.on]="english()" [attr.aria-pressed]="english()" (click)="setLanguage('eng')">English</button>
           <button [class.on]="!english()" [attr.aria-pressed]="!english()" (click)="setLanguage('mrw')">Meranaw</button>
         </div>
+
+        @if (installer.android && installer.canInstall()) {
+          <a class="fa-card fa-row play" [href]="playStoreUrl" target="_blank" rel="noopener">
+            <span class="fa-icon-circle"><ion-icon name="logo-google-playstore" /></span>
+            <span class="grow">
+              <div class="fa-row-title">Get the Android app</div>
+              <div class="fa-row-sub">Free on Google Play</div>
+            </span>
+            <ion-icon name="chevron-forward" color="medium" />
+          </a>
+        }
 
         <div class="fa-section">{{ english() ? 'Books' : 'Manga Kitab' }}</div>
         <div class="grid">
@@ -73,6 +84,14 @@ import { BookIconPipe } from '../shared';
           </span>
           <ion-icon name="chevron-forward" color="medium" />
         </a>
+        <button class="fa-card fa-row" (click)="toggleTheme()" [attr.aria-pressed]="dark()">
+          <span class="fa-icon-circle"><ion-icon [name]="dark() ? 'sunny' : 'moon'" /></span>
+          <span class="grow">
+            <div class="fa-row-title">{{ dark() ? 'Day mode' : 'Night mode' }}</div>
+            <div class="fa-row-sub">{{ dark() ? 'Bright screen for daytime' : 'Dark screen for reading at night' }}</div>
+          </span>
+          <span class="switch" [class.on]="dark()" aria-hidden="true"></span>
+        </button>
         <a class="fa-card fa-row" routerLink="/about">
           <span class="fa-icon-circle"><ion-icon name="information-circle-outline" /></span>
           <span class="grow"><div class="fa-row-title">About</div><div class="fa-row-sub">About the app and contact</div></span>
@@ -86,24 +105,24 @@ import { BookIconPipe } from '../shared';
   styles: `
     .hero {
       padding: 28px 20px;
-      border: 1px solid rgba(255, 179, 0, 0.35);
+      border: 1px solid var(--fa-hero-border);
       border-radius: 22px;
       background: linear-gradient(135deg, var(--fa-hero-light), var(--fa-hero));
       text-align: center;
     }
-    .bismillah { color: var(--fa-gold); font-size: 26px; line-height: 1.6; }
-    .divider { width: 48px; height: 2px; margin: 14px auto; background: rgba(255, 179, 0, 0.5); }
-    .hero h1 { margin: 0; font-size: 22px; font-weight: 700; }
+    .bismillah { color: var(--fa-ornament); font-size: 30px; line-height: 1.6; }
+    .divider { width: 64px; height: 2px; margin: 14px auto; background: var(--fa-hero-border); }
+    .hero h1 { margin: 0; font-size: 23px; font-weight: 700; }
     .hero p { margin: 6px 0 0; color: var(--fa-text-2); }
     .lang {
       display: grid; grid-template-columns: 1fr 1fr; margin-top: 18px; overflow: hidden;
       border: 1px solid var(--fa-stroke); border-radius: 14px; background: var(--fa-card);
     }
     .lang button {
-      min-height: 46px; border: 0; background: transparent; color: var(--fa-text-2);
-      font: 700 16px var(--ion-font-family); cursor: pointer;
+      min-height: 54px; border: 0; background: transparent; color: var(--fa-text-2);
+      font: 700 17px var(--ion-font-family); cursor: pointer;
     }
-    .lang button.on { background: var(--fa-gold); color: var(--fa-primary-dark); }
+    .lang button.on { background: var(--fa-accent); color: var(--fa-on-accent); }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .book {
       display: flex;
@@ -117,11 +136,22 @@ import { BookIconPipe } from '../shared';
     .fa-icon-circle.big ::ng-deep svg { width: 28px; height: 28px; }
     .fa-icon-circle ::ng-deep svg { width: 24px; height: 24px; }
     .fa-icon-circle ion-icon { font-size: 22px; }
-    .name { margin-top: 4px; font-weight: 700; }
-    .sub { color: var(--fa-text-2); font-size: 13px; }
+    .name { margin-top: 4px; font-size: 17px; font-weight: 700; }
+    .sub { color: var(--fa-text-2); font-size: 15px; }
     .fa-row + .fa-row { margin-top: 10px; }
+    .play { margin-top: 14px; border: 2px solid var(--fa-accent); }
+    .switch {
+      position: relative; flex: none; width: 52px; height: 30px; border-radius: 15px;
+      background: var(--fa-stroke); transition: background 0.2s;
+    }
+    .switch::after {
+      content: ''; position: absolute; top: 3px; left: 3px; width: 24px; height: 24px;
+      border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); transition: left 0.2s;
+    }
+    .switch.on { background: var(--fa-accent); }
+    .switch.on::after { left: 25px; }
     .grow { flex: 1; min-width: 0; }
-    .footer { margin: 28px 0 12px; color: var(--fa-muted); font-size: 12px; text-align: center; }
+    .footer { margin: 28px 0 12px; color: var(--fa-muted); font-size: 13px; text-align: center; }
   `,
 })
 export class HomePage {
@@ -130,8 +160,10 @@ export class HomePage {
   protected content = inject(ContentService);
   protected version = APP_VERSION;
   protected slug = toSlug;
+  protected playStoreUrl = PLAY_STORE_URL;
 
   protected english = computed(() => this.store.language() === 'eng');
+  protected dark = computed(() => this.store.theme() === 'dark');
   // 6 Sifat is Meranaw only and has its own row
   protected books = computed(() =>
     this.content.categories().filter((c) => c.lang === this.store.language() && c.id !== 'sifat'),
@@ -144,5 +176,9 @@ export class HomePage {
 
   protected setLanguage(value: 'eng' | 'mrw') {
     this.store.setLanguage(value);
+  }
+
+  protected toggleTheme() {
+    this.store.setTheme(this.dark() ? 'light' : 'dark');
   }
 }
