@@ -32,9 +32,10 @@ import { openEmail } from '../services/mailer';
           <p>This is a non-commercial project. May Allah (SWT) reward us all.</p>
         </div>
 
-        <div class="fa-section">Install on iPhone</div>
+        <div class="fa-section">Install the app</div>
         <div class="fa-card box">
-          <p>Open this page in <b>Safari</b>, tap the <b>Share</b> button <ion-icon name="share-outline" />, then <b>Add to Home Screen</b> <ion-icon name="add-circle-outline" />. The app gets its own icon and works offline for pages you have opened.</p>
+          <p>Tap the <b>Install</b> button <ion-icon name="download-outline" /> at the top of the home page. The app gets its own icon and works offline for pages you have opened.</p>
+          <p>On iPhone, open this page in <b>Safari</b>, tap the <b>Share</b> button <ion-icon name="share-outline" />, then <b>Add to Home Screen</b> <ion-icon name="add-circle-outline" />.</p>
         </div>
 
         <div class="fa-section">Follow</div>

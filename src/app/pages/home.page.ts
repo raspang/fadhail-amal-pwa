@@ -4,6 +4,7 @@ import {
   IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar,
 } from '@ionic/angular';
 import { APP_VERSION, ContentService, toSlug } from '../services/content.service';
+import { InstallService } from '../services/install.service';
 import { StoreService } from '../services/store.service';
 import { BookIconPipe } from '../shared';
 
@@ -15,6 +16,9 @@ import { BookIconPipe } from '../shared';
       <ion-toolbar>
         <ion-title>Fadhail Amal</ion-title>
         <ion-buttons slot="end">
+          @if (installer.canInstall()) {
+            <ion-button (click)="installer.install()" aria-label="Install app"><ion-icon slot="icon-only" name="download-outline" /></ion-button>
+          }
           <ion-button routerLink="/favorites" aria-label="Favorites"><ion-icon slot="icon-only" name="bookmark-outline" /></ion-button>
           <ion-button routerLink="/about" aria-label="About"><ion-icon slot="icon-only" name="information-circle-outline" /></ion-button>
         </ion-buttons>
@@ -122,6 +126,7 @@ import { BookIconPipe } from '../shared';
 })
 export class HomePage {
   protected store = inject(StoreService);
+  protected installer = inject(InstallService);
   protected content = inject(ContentService);
   protected version = APP_VERSION;
   protected slug = toSlug;
